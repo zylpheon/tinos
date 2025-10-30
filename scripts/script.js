@@ -3,86 +3,9 @@ let activeWindow = null;
 let draggedWindow = null;
 let dragOffset = { x: 0, y: 0 };
 let windowCounter = 0;
-const apps = {
-    aboutme: {
-        title: 'About Me',
-        icon: './images/aboutme.ico',
-        content: `
-            <h2>About Me</h2>
-            <p>Halo! Selamat datang di portfolio retro saya.</p>
-            <p>Saya adalah seorang [profesi Anda] yang passionate dalam [bidang Anda].</p>
-            <h3>Skills</h3>
-            <ul>
-                <li>HTML5, CSS3, JavaScript</li>
-                <li>React, Vue, atau framework lainnya</li>
-                <li>Backend Development</li>
-                <li>Database Management</li>
-            </ul>
-            <h3>Experience</h3>
-            <p>Pengalaman kerja dan pendidikan Anda bisa ditambahkan di sini.</p>
-        `
-    },
-    projects: {
-        title: 'Projects',
-        icon: './images/projects.ico',
-        content: `
-            <h2>My Projects</h2>
-            <h3>Project 1 - [Nama Project]</h3>
-            <p>Deskripsi singkat tentang project pertama Anda.</p>
-            <p><a href="#" target="_blank">View Project →</a></p>
-            
-            <h3>Project 2 - [Nama Project]</h3>
-            <p>Deskripsi singkat tentang project kedua Anda.</p>
-            <p><a href="#" target="_blank">View Project →</a></p>
-            
-            <h3>Project 3 - [Nama Project]</h3>
-            <p>Deskripsi singkat tentang project ketiga Anda.</p>
-            <p><a href="#" target="_blank">View Project →</a></p>
-        `
-    },
-    certificates: {
-        title: 'Certificates',
-        icon: './images/certificates.ico',
-        content: `
-            <h2>My Certificates</h2>
-            <h3>Certificate 1</h3>
-            <p>Nama sertifikat dan institusi pemberi.</p>
-            <p>Tahun: 2024</p>
-            
-            <h3>Certificate 2</h3>
-            <p>Nama sertifikat dan institusi pemberi.</p>
-            <p>Tahun: 2023</p>
-            
-            <h3>Certificate 3</h3>
-            <p>Nama sertifikat dan institusi pemberi.</p>
-            <p>Tahun: 2023</p>
-        `
-    },
-    contacts: {
-        title: 'Contacts',
-        icon: './images/contacts.ico',
-        content: `
-            <h2>Contact Me</h2>
-            <h3>Email</h3>
-            <p><a href="mailto:your.email@example.com">your.email@example.com</a></p>
-            
-            <h3>LinkedIn</h3>
-            <p><a href="https://linkedin.com/in/yourprofile" target="_blank">linkedin.com/in/yourprofile</a></p>
-            
-            <h3>GitHub</h3>
-            <p><a href="https://github.com/yourusername" target="_blank">github.com/yourusername</a></p>
-            
-            <h3>Social Media</h3>
-            <p>Twitter: <a href="https://twitter.com/yourhandle" target="_blank">@yourhandle</a></p>
-            <p>Instagram: <a href="https://instagram.com/yourhandle" target="_blank">@yourhandle</a></p>
-        `
-    },
-    calculator: {
-        title: 'Calculator',
-        icon: './images/calculator.ico',
-        isCalculator: true
-    }
-};
+let draggedTaskbarApp = null;
+let taskbarDragStartX = 0;
+const apps = {};
 document.addEventListener('DOMContentLoaded', function () {
     initClock();
     initStartMenu();
@@ -108,7 +31,6 @@ function updateClock() {
 function initStartMenu() {
     const startButton = document.getElementById('start-button');
     const startMenu = document.getElementById('start-menu');
-
     startButton.addEventListener('click', function (e) {
         e.stopPropagation();
         startMenu.classList.toggle('hidden');
@@ -133,7 +55,6 @@ function initDesktopIcons() {
             if (clickCount === 1) {
                 document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected'));
                 this.classList.add('selected');
-
                 clickTimer = setTimeout(() => {
                     clickCount = 0;
                 }, 300);
@@ -174,8 +95,8 @@ function openApplication(appName) {
     windowElement.className = 'window active';
     windowElement.id = windowId;
     windowElement.setAttribute('data-app', appName);
-    if (app.isCalculator) {
-        windowElement.classList.add('calculator-window');
+    if (app.windowClass) {
+        windowElement.classList.add(app.windowClass);
     }
     const titlebar = document.createElement('div');
     titlebar.className = 'window-titlebar';
@@ -191,17 +112,25 @@ function openApplication(appName) {
     `;
     const content = document.createElement('div');
     content.className = 'window-content';
-    if (app.isCalculator) {
-        content.classList.add('calculator-content');
-        content.innerHTML = createCalculatorHTML();
+    if (app.contentClass) {
+        content.classList.add(app.contentClass);
+    }
+    if (app.getContent) {
+        content.innerHTML = app.getContent();
     } else {
-        content.innerHTML = app.content;
+        content.innerHTML = app.content || '';
     }
     windowElement.appendChild(titlebar);
     windowElement.appendChild(content);
     const offset = windows.length * 30;
-    windowElement.style.left = `${100 + offset}px`;
-    windowElement.style.top = `${100 + offset}px`;
+    const maxWidth = window.innerWidth - 50;
+    const maxHeight = window.innerHeight - 80;
+    let leftPos = 100 + offset;
+    let topPos = 100 + offset;
+    if (leftPos > maxWidth - 400) leftPos = 50;
+    if (topPos > maxHeight - 300) topPos = 50;
+    windowElement.style.left = `${leftPos}px`;
+    windowElement.style.top = `${topPos}px`;
     document.getElementById('windows-container').appendChild(windowElement);
     windows.push({
         id: windowId,
@@ -210,90 +139,10 @@ function openApplication(appName) {
     });
     addTaskbarButton(windowId, app.title, app.icon);
     initWindowControls(windowElement);
-    if (app.isCalculator) {
-        initCalculator(windowElement);
+    if (app.init) {
+        app.init(windowElement);
     }
     focusWindow(windowElement);
-}
-function createCalculatorHTML() {
-    return `
-        <div class="calculator-display">0</div>
-        <div class="calculator-buttons">
-            <button class="calculator-button" data-value="7">7</button>
-            <button class="calculator-button" data-value="8">8</button>
-            <button class="calculator-button" data-value="9">9</button>
-            <button class="calculator-button" data-value="/">÷</button>
-            <button class="calculator-button" data-value="4">4</button>
-            <button class="calculator-button" data-value="5">5</button>
-            <button class="calculator-button" data-value="6">6</button>
-            <button class="calculator-button" data-value="*">×</button>
-            <button class="calculator-button" data-value="1">1</button>
-            <button class="calculator-button" data-value="2">2</button>
-            <button class="calculator-button" data-value="3">3</button>
-            <button class="calculator-button" data-value="-">−</button>
-            <button class="calculator-button" data-value="0">0</button>
-            <button class="calculator-button" data-value=".">.</button>
-            <button class="calculator-button" data-value="=">=</button>
-            <button class="calculator-button" data-value="+">+</button>
-            <button class="calculator-button span-2" data-value="C">C</button>
-            <button class="calculator-button span-2" data-value="CE">CE</button>
-        </div>
-    `;
-}
-function initCalculator(windowElement) {
-    const display = windowElement.querySelector('.calculator-display');
-    const buttons = windowElement.querySelectorAll('.calculator-button');
-    let currentValue = '0';
-    let previousValue = null;
-    let operation = null;
-    let shouldResetDisplay = false;
-    buttons.forEach(button => {
-        button.addEventListener('click', function () {
-            const value = this.getAttribute('data-value');
-            if (value === 'C' || value === 'CE') {
-                currentValue = '0';
-                previousValue = null;
-                operation = null;
-                shouldResetDisplay = false;
-                display.textContent = currentValue;
-            } else if (value === '=') {
-                if (operation && previousValue !== null) {
-                    currentValue = calculate(previousValue, currentValue, operation);
-                    display.textContent = currentValue;
-                    previousValue = null;
-                    operation = null;
-                    shouldResetDisplay = true;
-                }
-            } else if (['+', '-', '*', '/'].includes(value)) {
-                if (operation && previousValue !== null && !shouldResetDisplay) {
-                    currentValue = calculate(previousValue, currentValue, operation);
-                    display.textContent = currentValue;
-                }
-                previousValue = currentValue;
-                operation = value;
-                shouldResetDisplay = true;
-            } else {
-                if (shouldResetDisplay || currentValue === '0') {
-                    currentValue = value;
-                    shouldResetDisplay = false;
-                } else {
-                    currentValue += value;
-                }
-                display.textContent = currentValue;
-            }
-        });
-    });
-}
-function calculate(a, b, op) {
-    const num1 = parseFloat(a);
-    const num2 = parseFloat(b);
-    switch (op) {
-        case '+': return String(num1 + num2);
-        case '-': return String(num1 - num2);
-        case '*': return String(num1 * num2);
-        case '/': return num2 !== 0 ? String(num1 / num2) : 'Error';
-        default: return b;
-    }
 }
 function initWindowControls(windowElement) {
     const titlebar = windowElement.querySelector('.window-titlebar');
@@ -308,6 +157,17 @@ function initWindowControls(windowElement) {
         dragOffset.y = e.clientY - rect.top;
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
+    });
+    titlebar.addEventListener('touchstart', function (e) {
+        if (e.target.closest('.window-button')) return;
+        draggedWindow = windowElement;
+        focusWindow(windowElement);
+        const rect = windowElement.getBoundingClientRect();
+        const touch = e.touches[0];
+        dragOffset.x = touch.clientX - rect.left;
+        dragOffset.y = touch.clientY - rect.top;
+        document.addEventListener('touchmove', onTouchMove);
+        document.addEventListener('touchend', onTouchEnd);
     });
     minimizeBtn.addEventListener('click', function (e) {
         e.stopPropagation();
@@ -336,6 +196,23 @@ function onMouseUp() {
     draggedWindow = null;
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
+}
+function onTouchMove(e) {
+    if (!draggedWindow) return;
+    const touch = e.touches[0];
+    let newX = touch.clientX - dragOffset.x;
+    let newY = touch.clientY - dragOffset.y;
+    const maxX = window.innerWidth - draggedWindow.offsetWidth;
+    const maxY = window.innerHeight - 40 - draggedWindow.offsetHeight;
+    newX = Math.max(0, Math.min(newX, maxX));
+    newY = Math.max(0, Math.min(newY, maxY));
+    draggedWindow.style.left = `${newX}px`;
+    draggedWindow.style.top = `${newY}px`;
+}
+function onTouchEnd() {
+    draggedWindow = null;
+    document.removeEventListener('touchmove', onTouchMove);
+    document.removeEventListener('touchend', onTouchEnd);
 }
 function focusWindow(windowElement) {
     document.querySelectorAll('.window').forEach(w => {
@@ -378,6 +255,7 @@ function addTaskbarButton(windowId, title, icon) {
     const button = document.createElement('div');
     button.className = 'taskbar-app active';
     button.setAttribute('data-window', windowId);
+    button.setAttribute('draggable', 'true');
     button.innerHTML = `
         <img src="${icon}" alt="${title}">
         <span>${title}</span>
@@ -390,6 +268,27 @@ function addTaskbarButton(windowId, title, icon) {
             minimizeWindow(windowElement);
         } else {
             focusWindow(windowElement);
+        }
+    });
+    button.addEventListener('dragstart', function (e) {
+        draggedTaskbarApp = this;
+        this.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+    });
+    button.addEventListener('dragend', function () {
+        this.classList.remove('dragging');
+        draggedTaskbarApp = null;
+    });
+    button.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        if (draggedTaskbarApp && draggedTaskbarApp !== this) {
+            const rect = this.getBoundingClientRect();
+            const midpoint = rect.left + rect.width / 2;
+            if (e.clientX < midpoint) {
+                taskbarApps.insertBefore(draggedTaskbarApp, this);
+            } else {
+                taskbarApps.insertBefore(draggedTaskbarApp, this.nextSibling);
+            }
         }
     });
     taskbarApps.appendChild(button);

@@ -15,7 +15,7 @@ body {
 #desktop {
     width: 100%;
     height: calc(100vh - 40px);
-    background-image: url('../images/wallpaper.jpeg');
+    background-image: url('../images/wallpapers/1.webp');
     background-size: cover;
     background-position: center;
     padding: 20px;
@@ -112,6 +112,10 @@ body {
     text-overflow: ellipsis;
 }
 
+.taskbar-app.dragging {
+    opacity: 0.5;
+}
+
 .taskbar-app img {
     width: 16px;
     height: 16px;
@@ -188,6 +192,8 @@ body {
     position: absolute;
     min-width: 400px;
     min-height: 300px;
+    max-width: calc(100vw - 20px);
+    max-height: calc(100vh - 60px);
     background: #c0c0c0;
     border: 2px outset #ffffff;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
@@ -290,6 +296,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    overflow: hidden;
 }
 
 .calculator-buttons {
@@ -313,6 +320,173 @@ body {
 
 .calculator-button.span-2 {
     grid-column: span 2;
+}
+
+.minesweeper-window {
+    min-width: 280px !important;
+    max-width: 280px !important;
+    min-height: 350px !important;
+    max-height: 350px !important;
+}
+
+.minesweeper-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: #c0c0c0 !important;
+    border: none !important;
+    padding: 5px !important;
+}
+
+.minesweeper-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #c0c0c0;
+    border: 2px inset #808080;
+    padding: 5px;
+}
+
+.mine-counter,
+.timer-counter {
+    background: black;
+    color: red;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border: 1px solid #808080;
+}
+
+.face-button {
+    width: 32px;
+    height: 32px;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.face-button:active {
+    border-style: inset;
+}
+
+.minesweeper-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 0;
+    border: 2px inset #808080;
+}
+
+.mine-cell {
+    width: 30px;
+    height: 30px;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    user-select: none;
+}
+
+.mine-cell:active {
+    border-style: inset;
+}
+
+.mine-cell.revealed {
+    background: #d0d0d0;
+    border: 1px solid #808080;
+    cursor: default;
+}
+
+.mine-cell.mine {
+    background: red;
+}
+
+.mine-cell.number-1 {
+    color: blue;
+}
+
+.mine-cell.number-2 {
+    color: green;
+}
+
+.mine-cell.number-3 {
+    color: red;
+}
+
+.mine-cell.number-4 {
+    color: darkblue;
+}
+
+.mine-cell.number-5 {
+    color: darkred;
+}
+
+.mine-cell.number-6 {
+    color: cyan;
+}
+
+.mine-cell.number-7 {
+    color: black;
+}
+
+.mine-cell.number-8 {
+    color: gray;
+}
+
+.wallpapers-window {
+    min-width: 500px !important;
+    min-height: 400px !important;
+}
+
+.wallpapers-content {
+    background: white !important;
+}
+
+.wallpaper-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 10px;
+}
+
+.wallpaper-item {
+    cursor: pointer;
+    border: 3px solid transparent;
+    padding: 5px;
+    background: #f0f0f0;
+    transition: all 0.2s;
+}
+
+.wallpaper-item:hover {
+    border-color: #000080;
+    background: #e0e0e0;
+}
+
+.wallpaper-item.selected {
+    border-color: #000080;
+    background: #d0d0d0;
+}
+
+.wallpaper-item img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #808080;
+}
+
+.wallpaper-item span {
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 11px;
 }
 
 .window-content h2 {
@@ -369,4 +543,85 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #606060;
+}
+
+@media (max-width: 768px) {
+    .window {
+        min-width: 90vw !important;
+        max-width: 95vw !important;
+        left: 2.5vw !important;
+    }
+
+    .calculator-window {
+        min-width: 280px !important;
+        max-width: 90vw !important;
+    }
+
+    .minesweeper-window {
+        min-width: 280px !important;
+        max-width: 90vw !important;
+    }
+
+    .wallpapers-window {
+        min-width: 90vw !important;
+    }
+
+    .wallpaper-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+    }
+
+    .desktop-icon {
+        width: 70px;
+        gap: 20px;
+    }
+
+    .desktop-icon img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .taskbar-app {
+        min-width: 100px;
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    #desktop {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .desktop-icon {
+        width: 60px;
+    }
+
+    .desktop-icon img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .desktop-icon span {
+        font-size: 10px;
+    }
+
+    .taskbar-app {
+        min-width: 80px;
+        max-width: 120px;
+    }
+
+    .taskbar-app span {
+        display: none;
+    }
+
+    #start-button {
+        padding: 0 10px;
+        font-size: 11px;
+    }
+
+    .wallpaper-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 8px;
+    }
 }
