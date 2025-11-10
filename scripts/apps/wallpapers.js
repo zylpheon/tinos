@@ -5,10 +5,10 @@ apps.wallpapers = {
     contentClass: 'wallpapers-content',
     getContent: function () {
         const wallpapers = [
-            '1.webp',
-            '2.webp',
-            '3.webp',
-            '4.webp'
+            '1.jpg',
+            '2.jpg',
+            '3.jpg',
+            '4.jpg'
         ];
         let html = '<h2>Choose Wallpaper</h2><div class="wallpaper-grid">';
         wallpapers.forEach((wallpaper, index) => {
