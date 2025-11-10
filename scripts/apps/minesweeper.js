@@ -1,13 +1,13 @@
 apps.minesweeper = {
     title: 'Minesweeper',
-    icon: 'images/minesweeper.ico',
+    icon: './images/icons/minesweeper.ico',
     windowClass: 'minesweeper-window',
     contentClass: 'minesweeper-content',
     getContent: function () {
         return `
             <div class="minesweeper-header">
                 <div class="mine-counter">010</div>
-                <button class="face-button">😊</button>
+                <button class="face-button">._.</button>
                 <div class="timer-counter">000</div>
             </div>
             <div class="minesweeper-grid"></div>
@@ -41,7 +41,7 @@ apps.minesweeper = {
             renderGrid();
         }
         function resetGame() {
-            faceButton.textContent = '😊';
+            faceButton.textContent = '._.';
             initGame();
         }
         function placeMines(excludeRow, excludeCol) {
@@ -103,7 +103,7 @@ apps.minesweeper = {
             if (grid[row][col] === -1) {
                 revealAllMines();
                 gameOver = true;
-                faceButton.textContent = '😵';
+                faceButton.textContent = '×_×';
                 if (timerInterval) clearInterval(timerInterval);
             } else {
                 revealCell(row, col);
@@ -150,7 +150,7 @@ apps.minesweeper = {
             }
             if (unrevealedCount === 0) {
                 gameOver = true;
-                faceButton.textContent = '😎';
+                faceButton.textContent = '^_^';
                 if (timerInterval) clearInterval(timerInterval);
             }
         }

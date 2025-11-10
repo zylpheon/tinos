@@ -1,6 +1,6 @@
 apps.calculator = {
     title: 'Calculator',
-    icon: 'images/calculator.ico',
+    icon: './images/icons/calculator.ico',
     windowClass: 'calculator-window',
     contentClass: 'calculator-content',
     getContent: function () {
