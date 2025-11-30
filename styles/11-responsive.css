@@ -25,13 +25,25 @@
     }
 
     .wallpaper-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 10px;
     }
 
+    .wallpaper-item img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
     .certificates-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: 1fr;
         gap: 15px;
+    }
+
+    .certificate-item img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
     }
 
     .desktop-icon {
@@ -84,12 +96,24 @@
     }
 
     .wallpaper-grid {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 8px;
     }
 
+    .wallpaper-item img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
     .certificates-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        grid-template-columns: 1fr;
         gap: 10px;
+    }
+
+    .certificate-item img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
     }
 }

@@ -33,7 +33,14 @@
     display: flex;
     gap: 2px;
     overflow-x: auto;
+    overflow-y: hidden;
     height: 32px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#taskbar-apps::-webkit-scrollbar {
+    display: none;
 }
 
 .taskbar-app {
@@ -51,6 +58,35 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    position: relative;
+}
+
+.taskbar-app-content {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.taskbar-app-close {
+    width: 16px;
+    height: 16px;
+    background: #ff4444;
+    color: white;
+    border: 1px outset #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-left: 4px;
+}
+
+.taskbar-app-close:active {
+    border-style: inset;
 }
 
 .taskbar-app.dragging {
@@ -60,11 +96,19 @@
 .taskbar-app img {
     width: 16px;
     height: 16px;
+    flex-shrink: 0;
+}
+
+.taskbar-app span {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .taskbar-app.active {
     border-style: inset;
-    background: #808080;
+    background: #d4d4d4;
 }
 
 .taskbar-app:hover {

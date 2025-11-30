@@ -5,7 +5,6 @@ let dragOffset = { x: 0, y: 0 };
 let windowCounter = 0;
 let draggedTaskbarApp = null;
 let taskbarDragStartX = 0;
-const apps = {};
 document.addEventListener('DOMContentLoaded', function () {
     initClock();
     initStartMenu();
@@ -88,6 +87,11 @@ function openApplication(appName) {
         if (existingWindow.element.classList.contains('minimized')) {
             restoreWindow(existingWindow.element);
         }
+        return;
+    }
+    const openWindowsCount = windows.filter(w => !w.element.classList.contains('minimized')).length;
+    if (openWindowsCount >= 3) {
+        alert('Maximum 3 windows can be opened at once. Please close a window first.');
         return;
     }
     const windowId = `window-${windowCounter++}`;
@@ -257,10 +261,19 @@ function addTaskbarButton(windowId, title, icon) {
     button.setAttribute('data-window', windowId);
     button.setAttribute('draggable', 'true');
     button.innerHTML = `
-        <img src="${icon}" alt="${title}">
-        <span>${title}</span>
+        <div class="taskbar-app-content">
+            <img src="${icon}" alt="${title}">
+            <span>${title}</span>
+        </div>
+        <div class="taskbar-app-close">×</div>
     `;
-    button.addEventListener('click', function () {
+
+    const appContent = button.querySelector('.taskbar-app-content');
+    const closeBtn = button.querySelector('.taskbar-app-close');
+
+    // Click pada content (bukan tombol close)
+    appContent.addEventListener('click', function (e) {
+        e.stopPropagation();
         const windowElement = document.getElementById(windowId);
         if (windowElement.classList.contains('minimized')) {
             restoreWindow(windowElement);
@@ -270,15 +283,25 @@ function addTaskbarButton(windowId, title, icon) {
             focusWindow(windowElement);
         }
     });
+
+    // Click pada tombol close
+    closeBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const windowElement = document.getElementById(windowId);
+        closeWindow(windowElement);
+    });
+
     button.addEventListener('dragstart', function (e) {
         draggedTaskbarApp = this;
         this.classList.add('dragging');
         e.dataTransfer.effectAllowed = 'move';
     });
+
     button.addEventListener('dragend', function () {
         this.classList.remove('dragging');
         draggedTaskbarApp = null;
     });
+
     button.addEventListener('dragover', function (e) {
         e.preventDefault();
         if (draggedTaskbarApp && draggedTaskbarApp !== this) {
@@ -291,5 +314,6 @@ function addTaskbarButton(windowId, title, icon) {
             }
         }
     });
+
     taskbarApps.appendChild(button);
 }
