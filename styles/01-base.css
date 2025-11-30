@@ -1,0 +1,17 @@
+/* Base / Typography / Background */
+body {
+    font-family: 'MS Sans Serif', 'Microsoft Sans Serif', sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    background: #c0c0c0;
+}
+
+/* Optional: root variables (for easier future theming) */
+:root {
+    --bg-color: #c0c0c0;
+    --accent: #000080;
+    --accent-2: #0066cc;
+    --panel: #ffffff;
+    --panel-dark: #808080;
+}

@@ -1,0 +1,95 @@
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .window {
+        min-width: 90vw !important;
+        max-width: 95vw !important;
+        left: 2.5vw !important;
+    }
+
+    .calculator-window {
+        min-width: 280px !important;
+        max-width: 90vw !important;
+    }
+
+    .minesweeper-window {
+        min-width: 280px !important;
+        max-width: 90vw !important;
+    }
+
+    .wallpapers-window {
+        min-width: 90vw !important;
+    }
+
+    .certificates-window {
+        min-width: 90vw !important;
+    }
+
+    .wallpaper-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+    }
+
+    .certificates-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .desktop-icon {
+        width: 70px;
+        gap: 20px;
+    }
+
+    .desktop-icon img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .taskbar-app {
+        min-width: 100px;
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    #desktop {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .desktop-icon {
+        width: 60px;
+    }
+
+    .desktop-icon img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .desktop-icon span {
+        font-size: 10px;
+    }
+
+    .taskbar-app {
+        min-width: 80px;
+        max-width: 120px;
+    }
+
+    .taskbar-app span {
+        display: none;
+    }
+
+    #start-button {
+        padding: 0 10px;
+        font-size: 11px;
+    }
+
+    .wallpaper-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 8px;
+    }
+
+    .certificates-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+    }
+}

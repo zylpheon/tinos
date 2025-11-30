@@ -1,0 +1,48 @@
+/* Wallpapers app */
+.wallpapers-window {
+    min-width: 500px !important;
+    min-height: 400px !important;
+}
+
+.wallpapers-content {
+    background: white !important;
+}
+
+.wallpaper-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 10px;
+}
+
+.wallpaper-item {
+    cursor: pointer;
+    border: 3px solid transparent;
+    padding: 5px;
+    background: #f0f0f0;
+    transition: all 0.2s;
+}
+
+.wallpaper-item:hover {
+    border-color: #000080;
+    background: #e0e0e0;
+}
+
+.wallpaper-item.selected {
+    border-color: #000080;
+    background: #d0d0d0;
+}
+
+.wallpaper-item img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #808080;
+}
+
+.wallpaper-item span {
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 11px;
+}

@@ -1,0 +1,33 @@
+/* Desktop icons */
+.desktop-icon {
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    padding: 5px;
+    text-align: center;
+}
+
+.desktop-icon img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 5px;
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
+}
+
+.desktop-icon span {
+    color: white;
+    font-size: 11px;
+    text-shadow: 1px 1px 2px black;
+    word-wrap: break-word;
+}
+
+.desktop-icon:hover {
+    background: rgba(0, 0, 128, 0.3);
+}
+
+.desktop-icon.selected {
+    background: rgba(0, 0, 128, 0.5);
+}

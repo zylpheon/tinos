@@ -1,0 +1,23 @@
+/* Utilities: scrollbars and other small helpers */
+
+/* Scrollbars for webkit browsers */
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--panel-dark);
+    border: 2px outset #ffffff;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #606060;
+}
+
+/* fallback helper for selected states */
+.selected {}

@@ -1,0 +1,11 @@
+/* Reset & Base box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Generic helper to hide elements (used by the start menu/modal) */
+.hidden {
+    display: none !important;
+}

@@ -1,0 +1,119 @@
+/* Minesweeper app */
+.minesweeper-window {
+    min-width: 280px !important;
+    max-width: 280px !important;
+    min-height: 350px !important;
+    max-height: 350px !important;
+}
+
+.minesweeper-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: var(--bg-color) !important;
+    border: none !important;
+    padding: 5px !important;
+}
+
+.minesweeper-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-color);
+    border: 2px inset #808080;
+    padding: 5px;
+}
+
+.mine-counter,
+.timer-counter {
+    background: black;
+    color: red;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border: 1px solid #808080;
+}
+
+.face-button {
+    width: 32px;
+    height: 32px;
+    background: var(--bg-color);
+    border: 2px outset #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.face-button:active {
+    border-style: inset;
+}
+
+.minesweeper-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 0;
+    border: 2px inset #808080;
+}
+
+.mine-cell {
+    width: 30px;
+    height: 30px;
+    background: var(--bg-color);
+    border: 2px outset #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    user-select: none;
+}
+
+.mine-cell:active {
+    border-style: inset;
+}
+
+.mine-cell.revealed {
+    background: #d0d0d0;
+    border: 1px solid #808080;
+    cursor: default;
+}
+
+.mine-cell.mine {
+    background: red;
+}
+
+.mine-cell.number-1 {
+    color: blue;
+}
+
+.mine-cell.number-2 {
+    color: green;
+}
+
+.mine-cell.number-3 {
+    color: red;
+}
+
+.mine-cell.number-4 {
+    color: darkblue;
+}
+
+.mine-cell.number-5 {
+    color: darkred;
+}
+
+.mine-cell.number-6 {
+    color: cyan;
+}
+
+.mine-cell.number-7 {
+    color: black;
+}
+
+.mine-cell.number-8 {
+    color: gray;
+}
