@@ -1,3 +1,18 @@
+/* Modular style imports */
+@import url('./00-reset.css');
+@import url('./01-base.css');
+@import url('./02-layout.css');
+@import url('./03-components-icons.css');
+@import url('./04-components-taskbar.css');
+@import url('./05-components-window.css');
+@import url('./06-apps-calculator.css');
+@import url('./07-apps-minesweeper.css');
+@import url('./08-apps-wallpapers.css');
+@import url('./09-apps-certificates.css');
+@import url('./10-utilities.css');
+@import url('./11-responsive.css');
+
+/* End of modular CSS */
 @import url('./00-reset.css');
 @import url('./01-base.css');
 @import url('./02-layout.css');

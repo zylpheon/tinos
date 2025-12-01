@@ -7,7 +7,7 @@ apps.minesweeper = {
         return `
             <div class="minesweeper-header">
                 <div class="mine-counter">010</div>
-                <button class="face-button">._.</button>
+                <button class="face-button"><img src="./images/minesweeper/smiley1.ico" alt="face" /></button>
                 <div class="timer-counter">000</div>
             </div>
             <div class="minesweeper-grid"></div>
@@ -23,6 +23,13 @@ apps.minesweeper = {
         let firstClick = true;
         let timer = 0;
         let timerInterval = null;
+        let faceTimeout = null;
+        const FLAG_ICON = './images/minesweeper/flag.ico';
+        const MINE_ICON = './images/minesweeper/mine.ico';
+        const FACE_WIN = './images/minesweeper/smiley.ico';
+        const FACE_DEFAULT = './images/minesweeper/smiley1.ico';
+        const FACE_PRESS = './images/minesweeper/smiley2.ico';
+        const FACE_LOSE = './images/minesweeper/smiley3.ico';
         const gridElement = windowElement.querySelector('.minesweeper-grid');
         const faceButton = windowElement.querySelector('.face-button');
         const mineCounter = windowElement.querySelector('.mine-counter');
@@ -39,9 +46,10 @@ apps.minesweeper = {
             if (timerInterval) clearInterval(timerInterval);
             updateCounters();
             renderGrid();
+            setFaceDefault();
         }
         function resetGame() {
-            faceButton.textContent = '._.';
+            if (faceTimeout) clearTimeout(faceTimeout);
             initGame();
         }
         function placeMines(excludeRow, excludeCol) {
@@ -75,16 +83,20 @@ apps.minesweeper = {
                     if (revealed[row][col]) {
                         cell.classList.add('revealed');
                         if (grid[row][col] === -1) {
-                            cell.textContent = '💣';
+                            cell.innerHTML = `<img src="${MINE_ICON}" alt="mine">`;
                             cell.classList.add('mine');
                         } else if (grid[row][col] > 0) {
                             cell.textContent = grid[row][col];
                             cell.classList.add(`number-${grid[row][col]}`);
                         }
                     } else if (flagged[row][col]) {
-                        cell.textContent = '🚩';
+                        cell.innerHTML = `<img src="${FLAG_ICON}" alt="flag">`;
                     }
                     cell.addEventListener('click', () => handleCellClick(row, col));
+                    cell.addEventListener('mousedown', (e) => {
+                        if (e.button === 0) setFacePressTemporary();
+                    });
+                    cell.addEventListener('touchstart', () => setFacePressTemporary());
                     cell.addEventListener('contextmenu', (e) => {
                         e.preventDefault();
                         handleRightClick(row, col);
@@ -95,6 +107,7 @@ apps.minesweeper = {
         }
         function handleCellClick(row, col) {
             if (gameOver || revealed[row][col] || flagged[row][col]) return;
+            setFacePressTemporary();
             if (firstClick) {
                 placeMines(row, col);
                 firstClick = false;
@@ -103,7 +116,7 @@ apps.minesweeper = {
             if (grid[row][col] === -1) {
                 revealAllMines();
                 gameOver = true;
-                faceButton.textContent = '×_×';
+                setFaceLose();
                 if (timerInterval) clearInterval(timerInterval);
             } else {
                 revealCell(row, col);
@@ -150,7 +163,7 @@ apps.minesweeper = {
             }
             if (unrevealedCount === 0) {
                 gameOver = true;
-                faceButton.textContent = '^_^';
+                setFaceWin();
                 if (timerInterval) clearInterval(timerInterval);
             }
         }
@@ -170,6 +183,32 @@ apps.minesweeper = {
                 if (timer > 999) timer = 999;
                 updateCounters();
             }, 1000);
+        }
+
+        function setFaceDefault() {
+            const img = faceButton.querySelector('img');
+            if (img) img.src = FACE_DEFAULT;
+        }
+
+        function setFacePressTemporary() {
+            if (faceTimeout) clearTimeout(faceTimeout);
+            const img = faceButton.querySelector('img');
+            if (img) img.src = FACE_PRESS;
+            faceTimeout = setTimeout(() => {
+                if (!gameOver) setFaceDefault();
+            }, 1000);
+        }
+
+        function setFaceWin() {
+            if (faceTimeout) clearTimeout(faceTimeout);
+            const img = faceButton.querySelector('img');
+            if (img) img.src = FACE_WIN;
+        }
+
+        function setFaceLose() {
+            if (faceTimeout) clearTimeout(faceTimeout);
+            const img = faceButton.querySelector('img');
+            if (img) img.src = FACE_LOSE;
         }
     }
 };
